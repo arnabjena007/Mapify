@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kolkata City Pathfinder</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-map-marked-alt"></i> Kolkata City Pathfinder</h1>
+                <p>Find the shortest path between any two locations in Kolkata using Dijkstra's algorithm</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <div class="input-section">
+                    <h3><i class="fas fa-route"></i> Plan Your Route</h3>
+                    
+                    <!-- Start Location -->
+                    <div class="location-input">
+                        <label for="start-location">
+                            <i class="fas fa-play-circle start-icon"></i> Start Location
+                        </label>
+                        <div class="input-group">
+                            <input type="text" id="start-location" placeholder="Enter start location or select landmark">
+                            <select id="start-landmark" class="landmark-select">
+                                <option value="">Select Landmark</option>
+                            </select>
+                        </div>
+                        <div class="coordinates" id="start-coords">Coordinates: Not set</div>
+                    </div>
+
+                    <!-- End Location -->
+                    <div class="location-input">
+                        <label for="end-location">
+                            <i class="fas fa-stop-circle end-icon"></i> End Location
+                        </label>
+                        <div class="input-group">
+                            <input type="text" id="end-location" placeholder="Enter end location or select landmark">
+                            <select id="end-landmark" class="landmark-select">
+                                <option value="">Select Landmark</option>
+                            </select>
+                        </div>
+                        <div class="coordinates" id="end-coords">Coordinates: Not set</div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button id="find-path-btn" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Find Shortest Path
+                        </button>
+                        <button id="clear-btn" class="btn btn-secondary">
+                            <i class="fas fa-eraser"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section" id="results-section" style="display: none;">
+                    <h3><i class="fas fa-chart-line"></i> Route Information</h3>
+                    <div class="result-item">
+                        <span class="result-label">Distance:</span>
+                        <span class="result-value" id="distance-result">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Path Segments:</span>
+                        <span class="result-value" id="segments-result">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Computation Time:</span>
+                        <span class="result-value" id="time-result">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Algorithm:</span>
+                        <span class="result-value">Dijkstra's Shortest Path</span>
+                    </div>
+                </div>
+
+                <!-- Network Stats -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-info-circle"></i> Network Statistics</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">Intersections:</span>
+                        <span class="stat-value" id="nodes-stat">Loading...</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Road Segments:</span>
+                        <span class="stat-value" id="edges-stat">Loading...</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Roads:</span>
+                        <span class="stat-value" id="length-stat">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Container -->
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-loading" id="map-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading Kolkata map...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loading-overlay" style="display: none;">
+            <div class="loading-content">
+                <i class="fas fa-route fa-spin"></i>
+                <h3>Computing Shortest Path...</h3>
+                <p>Using Dijkstra's algorithm to find the optimal route</p>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div class="modal" id="error-modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Error</h3>
+                    <button class="modal-close" id="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="error-message">An error occurred.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="modal-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
