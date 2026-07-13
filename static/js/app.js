@@ -128,6 +128,13 @@ class KolkataPathfinder {
         });
     }
 
+    setLocationLabel(type, text) {
+        const label = document.getElementById(`${type}-location-label`);
+        if (label) {
+            label.textContent = `Location: ${text}`;
+        }
+    }
+
     addLandmarkMarkers() {
         this.landmarks.forEach(landmark => {
             const marker = L.circleMarker([landmark.latitude, landmark.longitude], {
@@ -158,12 +165,14 @@ class KolkataPathfinder {
         if (type === 'start') {
             this.startCoords = coords;
             document.getElementById('start-location').value = landmarkName;
+            this.setLocationLabel('start', landmarkName);
             document.getElementById('start-coords').textContent = 
                 `Coordinates: ${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`;
             this.updateStartMarker(coords);
         } else {
             this.endCoords = coords;
             document.getElementById('end-location').value = landmarkName;
+            this.setLocationLabel('end', landmarkName);
             document.getElementById('end-coords').textContent = 
                 `Coordinates: ${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`;
             this.updateEndMarker(coords);
@@ -196,9 +205,11 @@ class KolkataPathfinder {
                 
                 if (type === 'start') {
                     this.startCoords = coords;
+                    this.setLocationLabel('start', address);
                     this.updateStartMarker(coords);
                 } else {
                     this.endCoords = coords;
+                    this.setLocationLabel('end', address);
                     this.updateEndMarker(coords);
                 }
 
@@ -260,6 +271,7 @@ class KolkataPathfinder {
             this.startCoords = coords;
             this.updateStartMarker(coords);
             document.getElementById('start-location').value = `${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`;
+            this.setLocationLabel('start', `${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`);
             document.getElementById('start-coords').textContent = 
                 `Coordinates: ${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`;
             document.getElementById('start-landmark').value = '';
@@ -267,6 +279,7 @@ class KolkataPathfinder {
             this.endCoords = coords;
             this.updateEndMarker(coords);
             document.getElementById('end-location').value = `${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`;
+            this.setLocationLabel('end', `${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`);
             document.getElementById('end-coords').textContent = 
                 `Coordinates: ${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`;
             document.getElementById('end-landmark').value = '';
@@ -275,6 +288,7 @@ class KolkataPathfinder {
             this.endCoords = coords;
             this.updateEndMarker(coords);
             document.getElementById('end-location').value = `${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`;
+            this.setLocationLabel('end', `${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`);
             document.getElementById('end-coords').textContent = 
                 `Coordinates: ${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`;
             document.getElementById('end-landmark').value = '';
@@ -366,6 +380,8 @@ class KolkataPathfinder {
         document.getElementById('end-location').value = '';
         document.getElementById('start-landmark').value = '';
         document.getElementById('end-landmark').value = '';
+        this.setLocationLabel('start', 'Not set');
+        this.setLocationLabel('end', 'Not set');
 
         // Clear coordinate displays
         document.getElementById('start-coords').textContent = 'Coordinates: Not set';

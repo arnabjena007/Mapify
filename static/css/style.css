@@ -265,6 +265,14 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+.selected-location {
+    margin-top: 2px;
+    margin-bottom: 8px;
+    color: #d9e2ff;
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
 .action-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
